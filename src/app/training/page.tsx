@@ -65,7 +65,7 @@ export default function TrainingPage() {
         </p>
       </div>
 
-      <Link href={`${base}/`} className="btn-ghost">← 返回首页</Link>
+      <Link href="/" className="btn-ghost">← 返回首页</Link>
     </div>
   )
 }

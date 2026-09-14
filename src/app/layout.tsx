@@ -15,13 +15,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
   return (
     <html lang="zh-CN">
-      <head>
-        {/* basePath 前缀：用静态 head 而非 next/script */}
-        {base && <base href={base} />}
-      </head>
+      {/*
+        不要加 <base href={basePath}>：
+        Next.js 的 basePath 已让所有 <Link> 与静态资源输出绝对路径，<base> 反而会让
+        相对路径与 #锚点 被错误解析到 /seeing-llm#xxx。
+      */}
       <body className="min-h-screen bg-void text-fg">
         {/* 全站底纹：工业网格 + 顶部极光（固定，不随滚动） */}
         <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-grid" />

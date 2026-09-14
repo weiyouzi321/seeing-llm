@@ -26,7 +26,7 @@ export default function PlaceholderPage({
           该轨道内容将在对应里程碑陆续交付。
         </p>
       )}
-      <Link href={`${base}/`} className="btn-ghost mt-4">
+      <Link href="/" className="btn-ghost mt-4">
         ← 返回首页
       </Link>
     </div>

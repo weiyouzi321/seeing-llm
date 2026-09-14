@@ -14,7 +14,7 @@ const TRACKS = [
     icon: Brain,
     accent: 'k3' as ModelId,
     bullets: ['KDA / Gated MLA / AttnRes', 'CED + CSA2 + FP4 KV', 'Gated DeltaNet / Gated Attention'],
-    href: `${base}/architecture`,
+    href: '/architecture',
   },
   {
     id: 'B',
@@ -24,7 +24,7 @@ const TRACKS = [
     icon: GitBranch,
     accent: 'v4' as ModelId,
     bullets: ['Tokenizer → Pretrain → SFT', 'DPO → GRPO → RLHF', 'Reasoning / 评测 / 蒸馏'],
-    href: `${base}/training`,
+    href: '/training',
   },
   {
     id: 'C',
@@ -34,7 +34,7 @@ const TRACKS = [
     icon: FlaskConical,
     accent: 'qwen' as ModelId,
     bullets: ['16 个 🔥 + 4 个补充', 'ReLU → Linear → Attention', 'RoPE / Top-k / Beam Search'],
-    href: `${base}/ops`,
+    href: '/ops',
   },
 ]
 
@@ -67,10 +67,10 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-wrap gap-4 mb-16 animate-fade-in-up">
-            <Link href={`${base}/architecture`} className="btn-primary">
+            <Link href="/architecture" className="btn-primary">
               先看层骨架对比 →
             </Link>
-            <Link href={`${base}/plan`} className="btn-ghost">
+            <Link href="/plan" className="btn-ghost">
               建设方案 v2.1
             </Link>
           </div>

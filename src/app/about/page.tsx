@@ -95,7 +95,7 @@ export default function AboutPage() {
       <h2 className="text-xl font-bold mb-4">更多</h2>
       <p className="text-fg-muted leading-relaxed">
         完整的建设方案见{' '}
-        <Link href={`${base}/plan`} className="text-neon underline underline-offset-4">
+        <Link href="/plan" className="text-neon underline underline-offset-4">
           v2.1
         </Link>
         ，源码与数据见{' '}

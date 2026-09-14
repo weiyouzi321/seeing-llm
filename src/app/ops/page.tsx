@@ -90,7 +90,7 @@ export default function OpsPage() {
       </section>
 
       <div className="mt-12">
-        <Link href={`${base}/`} className="btn-ghost">← 返回首页</Link>
+        <Link href="/" className="btn-ghost">← 返回首页</Link>
       </div>
     </div>
   )
