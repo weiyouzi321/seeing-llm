@@ -1,7 +1,12 @@
 import Link from 'next/link'
-import { OPS, OPS_BACKLOG, type OpGroup } from '@/lib/ops'
-
-const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
+import {
+  FREQ_LABEL,
+  FREQ_MARK,
+  GROUP_COLOR,
+  OPS,
+  OPS_BACKLOG,
+  type OpGroup,
+} from '@/lib/ops'
 
 export const metadata = {
   title: '算子与策略 · seeing-llm',
@@ -10,23 +15,10 @@ export const metadata = {
 
 const GROUPS: OpGroup[] = ['基础', '注意力', '推理策略', '为模型补']
 
-const GROUP_COLOR: Record<OpGroup, string> = {
-  基础: '#94A3B8',
-  注意力: '#22D3EE',
-  推理策略: '#FB923C',
-  为模型补: '#A78BFA',
-}
-
-const FREQ_MARK: Record<string, string> = {
-  fire: '🔥',
-  star: '⭐',
-  bulb: '💡',
-  extra: '★',
-}
-
 export default function OpsPage() {
   const extra = OPS.filter((o) => o.freq === 'extra').length
   const backlog = OPS_BACKLOG.star + OPS_BACKLOG.bulb
+  const withViz = OPS.filter((o) => o.viz !== 'none').length
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
@@ -38,9 +30,18 @@ export default function OpsPage() {
         16 个 🔥 高频，加上 4 个为三焦点模型补的。
       </p>
       <div className="flex flex-wrap gap-4 mb-10 font-mono text-xs text-fg-dim">
-        <span><span className="text-neon">{OPS.length}</span> 个算子页（P2）</span>
-        <span><span className="text-neon">{extra}</span> 个为模型补充</span>
-        <span><span className="text-neon">{backlog}</span> 个进待补清单</span>
+        <span>
+          <span className="text-neon">{OPS.length}</span> 个算子页
+        </span>
+        <span>
+          <span className="text-neon">{withViz}</span> 个带交互可视化
+        </span>
+        <span>
+          <span className="text-neon">{extra}</span> 个为模型补充
+        </span>
+        <span>
+          <span className="text-neon">{backlog}</span> 个进待补清单
+        </span>
       </div>
 
       {GROUPS.map((g) => {
@@ -55,20 +56,26 @@ export default function OpsPage() {
             </div>
             <div className="grid md:grid-cols-2 gap-3">
               {list.map((o) => (
-                <div
-                  key={o.fn}
-                  className="panel p-4 border-l-2 hover:bg-white/[0.02] transition"
+                <Link
+                  key={o.slug}
+                  href={`/ops/${o.slug}`}
+                  className="card-interactive p-4 border-l-2"
                   style={{ borderLeftColor: GROUP_COLOR[g] }}
                 >
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-xs">{FREQ_MARK[o.freq]}</span>
+                    <span className="text-xs" title={FREQ_LABEL[o.freq]}>
+                      {FREQ_MARK[o.freq]}
+                    </span>
                     <h3 className="font-semibold text-sm">{o.name}</h3>
                     <code className="font-mono text-[10px] text-fg-dim bg-white/[0.04] px-1.5 py-0.5 rounded">
                       {o.fn}
                     </code>
+                    {o.viz !== 'none' && (
+                      <span className="ml-auto font-mono text-[10px] text-neon shrink-0">可交互</span>
+                    )}
                   </div>
                   <p className="text-sm text-fg-muted leading-relaxed">{o.oneLine}</p>
-                </div>
+                </Link>
               ))}
             </div>
           </section>
@@ -90,7 +97,9 @@ export default function OpsPage() {
       </section>
 
       <div className="mt-12">
-        <Link href="/" className="btn-ghost">← 返回首页</Link>
+        <Link href="/" className="btn-ghost">
+          ← 返回首页
+        </Link>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@
 
 > 完整建设方案见 [`seeing-llm-建设方案-v2.1.md`](./seeing-llm-建设方案-v2.1.md)。
 
-**当前阶段：P1 · 视觉重构已完成 + 内容地基已铺，K3 模块页开发中**
+**当前阶段：P2 · 算子与策略 20 页（20 个算子页 + 13 个交互可视化）**
 **线上地址：https://weiyouzi321.github.io/seeing-llm/**
 
 ---
@@ -15,7 +15,7 @@
 | R1 | 视觉重构为「未来科幻风」 | ✅ 已上线 |
 | R2 | 首页与子页填充真实内容 | ✅ 已上线 |
 | P1 | Kimi K3 垂直切片（概览 + 5 个模块页） | ✅ 已上线 |
-| P2 | 算子与策略 20 页 | ⬜ 待开始 |
+| P2 | 算子与策略 20 页 + 交互可视化 | 🔄 进行中 |
 | P3 | V4.1 Flash + Qwen3.8 + 2 个横向专题 | ⬜ 待开始 |
 | P4 | 训练全流程（MiniMind 8 阶段） | ⬜ 待开始 |
 | P5 | 收尾 + 待补清单 | ⬜ 待开始 |
@@ -28,9 +28,30 @@
 - **/architecture/kimi-k3/{kda, gated-mla, attnres, latent-moe, situ-glu}**：5 个模块页，
   统一三段式 **问题 → 设计 → 取舍** + 关键要点；KDA 页带 **AttentionScaling** 交互
 - **/training**：MiniMind 规格（64M / 8 层 / 768 / 词表 6400）+ 8 阶段时间线
-- **/ops**：高频前 20 算子（16 🔥 + 4 补），按「基础 / 注意力 / 推理策略 / 为模型补」分四组
+- **/ops**：高频前 20 算子（16 🔥 + 4 补），按「基础 / 注意力 / 推理策略 / 为模型补」分四组，
+  卡片直达详情页，带「可交互」角标
+- **/ops/{20 个 slug}**：每个算子一页 —— 它在做什么 / 亲手调一调（交互可视化）/
+  张量形状链路 / PyTorch 教学实现 / 它用在哪（三轨交叉链接）/ 上下页导航
 - **/about**：定位、数据来源、Kimi K3 License 说明、性能硬约束
 - **/plan**：v2.1 决策摘要 + 里程碑 + 明确不做清单
+
+### P2 交互可视化清单（13 个组件，`src/components/opviz/`）
+
+| 组件 | 挂在哪个算子 | 教学点 |
+|---|---|---|
+| `ActivationCurves` | relu | ReLU/GELU/SiLU/Leaky 四曲线对比，可开关 |
+| `SoftmaxTemp` | softmax | 温度 T 如何把分布从贪心推向均匀（熵实时算） |
+| `NormDemo` | layer-norm | 原始 / LayerNorm / RMSNorm 三视图 + μ、σ 对比 |
+| `DropoutDemo` | dropout | inverted dropout 为什么输出均值不变 |
+| `LossDemo` | cross-entropy | −log p 曲线；160K 词表随机猜 = 11.98 |
+| `RopeDial` | rope | 旋转后内积只与相对位置有关（「两者 +1」按钮可验证） |
+| `CausalMask` | sdpa / causal-attention | L×L 矩阵掩码；被遮的「算完再扔」 |
+| `SampleDemo` | top-k-top-p | 核采样规则可视化 + 30 次采样直方图 |
+| `KvCacheDemo` | kv-cache | Σt² vs Σt；加速比 = (2L+1)/3 |
+| `MoeRouting` | moe-routing | **路由塌缩**模拟 + 负载均衡损失开关 + 基尼系数 |
+| `GqaHeads` | multihead-attention / gqa | Q 头与 KV 头分组；缓存比 = G/H |
+| `ConvSweep` | conv2d | 3×3 核在 7×7 上滑窗，四种核可切 |
+| `ShapeFlow` | linear / embedding / gpt2-block | 张量形状链路通用渲染 |
 
 ## 关键数据
 
@@ -128,12 +149,39 @@ curl --ssl-no-revoke -sL -H "Authorization: Bearer $TOK" \
 
 ## 技术债
 
-- **没有 `package-lock.json`** —— 本地装不了依赖。补上后应把 `npm ci` 与 `cache: 'npm'` 切回来。
+- **没有 `package-lock.json`** —— 补上后应把 `npm ci` 与 `cache: 'npm'` 切回来。
 - **架构图仍是合成占位图** —— HF 在沙箱返回 502，真实原图未拉下来。
   文件名与压缩档位已固定，替换 `raw/` 后重跑 `compress.py` 即可，无需改前端。
+- **`node_modules` 未纳入版本控制** —— 沙箱本地安装用，记得确认 `.gitignore` 已忽略。
 
-## 下一步（P1 剩余）
+### 10. ⭐ 静态导出下客户端组件也会预渲染 → 首屏严禁 `Math.random()`
 
-1. `/architecture/kimi-k3` 概览页 —— 真实规格 + 层骨架可交互图
-2. 5 个模块页：KDA / Gated MLA / AttnRes / Stable LatentMoE / SiTU-GLU
-   每页一个自绘 SVG 的可拖可点组件（不用位图）
+`output: 'export'` 时 `'use client'` 组件同样会在构建期跑一次生成 HTML。
+若初始 state 用 `Math.random()`，服务端 HTML 与客户端首次渲染不一致 → hydration 报错。
+→ 口诀：**首屏用种子（`mulberry32`），交互才用真随机**（见 `opviz/ui.tsx`）。
+
+### 11. ⭐ 组件返回类型写 `ReactNode` 会导致「不能用作 JSX 组件」
+
+`@types/react` 18 要求函数组件返回 `ReactElement | null`。
+派发组件 `OpViz` 若声明成 `ReactNode`，调用处 `<OpViz />` 直接报
+*"its return type 'ReactNode' is not a valid JSX element"*。
+→ 派发函数统一写 `JSX.Element | null`。
+
+### 12. `setState` 连续调用会读到同一个闭包快照
+
+「连续 10 批」按钮里循环 10 次 `send()`，每次都基于**同一个**旧 state 计算，
+结果只生效最后一批。
+→ 改为内部循环累积（`let cur = prev; for (...) cur = step(cur)`），
+并把 `Math.random()` 预生成在 `setState` **外面**，保证 updater 是纯函数（StrictMode 会双调用）。
+
+### 13. Tailwind `@layer components` 里的自定义类会被 purge
+
+`.rng::-webkit-slider-thumb` 这类纯伪元素样式放在 `@layer` 内风险高。
+→ 滑块样式移到 `@layer` 之外的普通 CSS 区（globals.css 底部）。
+
+## 下一步（P3）
+
+1. V4.1 Flash + Qwen3.8 模块页（层骨架与 K3 同构 23×4，可复用模板）
+2. **双模型层墙**：K3 与 Qwen3.8 逐层对齐
+3. 两个横向专题：MoE 稀疏度三条路线 / KV Cache 三条路线
+4. P4 训练全流程（MiniMind 8 阶段可视时间线，数据已在 `TRAIN_STAGES`）
