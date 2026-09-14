@@ -25,9 +25,18 @@ export const PLACEHOLDER_DIAGRAMS = [
 export type DiagramId = (typeof PLACEHOLDER_DIAGRAMS)[number]['id']
 
 /**
- * 获取压缩产物的相对路径
- * 注意：Next.js 静态导出会自动加 basePath，前端代码直接用根路径即可。
+ * basePath 前缀（构建时内联）
+ *
+ * ⚠️ 关键坑：原生 <img src> 和 fetch() 都 **不会** 自动加 basePath，
+ *    只有 next/link 和 next/router 会。部署在 github.io 子路径下时，
+ *    裸路径 `/images/...` 会 404。必须在这里显式拼接。
+ *    参见 seeing-single-cell 的同类修复。
+ */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || ''
+
+/**
+ * 获取压缩产物的完整路径（含 basePath 前缀）
  */
 export function getDiagramPath(id: DiagramId, tier: 'thumb' | 'md' | 'xl' = 'md'): string {
-  return `/images/${tier}/${id}.webp`
+  return `${BASE}/images/${tier}/${id}.webp`
 }
