@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'npm'
+          # 不缓存 npm：仓库还没有 lockfile（P0 阶段沙箱无法本地生成）
 
       - name: Install dependencies
         # 用 npm install 而非 npm ci：仓库还没有 package-lock.json（P0 阶段沙箱无法本地生成）
