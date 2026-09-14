@@ -15,7 +15,7 @@
 | R1 | 视觉重构为「未来科幻风」 | ✅ 已上线 |
 | R2 | 首页与子页填充真实内容 | ✅ 已上线 |
 | P1 | Kimi K3 垂直切片（概览 + 5 个模块页） | ✅ 已上线 |
-| P2 | 算子与策略 20 页 + 交互可视化 | 🔄 进行中 |
+| P2 | 算子与策略 20 页 + 交互可视化 | ✅ 已上线（commit `abe939c`） |
 | P3 | V4.1 Flash + Qwen3.8 + 2 个横向专题 | ⬜ 待开始 |
 | P4 | 训练全流程（MiniMind 8 阶段） | ⬜ 待开始 |
 | P5 | 收尾 + 待补清单 | ⬜ 待开始 |
@@ -59,7 +59,8 @@
 |---|---|
 | 站点地址 | https://weiyouzi321.github.io/seeing-llm/ |
 | 首页 HTML 体积 | 77.6 KB（重构前 34.7 KB） |
-| 子页面 | architecture 47.5 KB · ops 40.2 KB · training 27.5 KB · plan 23.6 KB · about 21.9 KB |
+| 子页面 | architecture 47.5 KB · ops 47.8 KB · 单个算子页 25–40 KB · training 27.5 KB · plan 23.6 KB · about 21.9 KB |
+| 静态页面总数 | 35（原 15）→ 首页 + 5 静态页 + 6 个 K3 页 + 21 个算子页 + 404 |
 | 唯一数据源 | `src/lib/models.ts`（三模型规格）· `src/lib/ops.ts`（算子 + 训练阶段） |
 | 站点 basePath | `/seeing-llm` |
 | 图片流水线压缩比 | 20.85 MB → 0.95 MB（4.6%） |
