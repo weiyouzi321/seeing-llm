@@ -4,14 +4,13 @@ import { MODEL_LIST } from '@/lib/models'
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
-/** 各模型模块的交付节奏 */
+/** 各模型模块的交付节奏 —— K3 的 5 个已随 P1 上线 */
 const MODULE_STATUS: Record<string, 'live' | 'next' | 'planned'> = {
-  // P3 才做 V4.1 / Qwen3.8 的模块页
-  kda: 'planned',
-  'gated-mla': 'planned',
-  attnres: 'planned',
-  'latent-moe': 'planned',
-  'situ-glu': 'planned',
+  kda: 'live',
+  'gated-mla': 'live',
+  attnres: 'live',
+  'latent-moe': 'live',
+  'situ-glu': 'live',
 }
 
 export const metadata = {
@@ -61,17 +60,34 @@ export default function ArchitecturePage() {
           <div className="grid md:grid-cols-2 gap-4">
             {m.modules.map((mod) => {
               const st = MODULE_STATUS[mod.slug] ?? 'planned'
-              return (
+              const href =
+                m.id === 'k3' ? `/architecture/kimi-k3/${mod.slug}` : null
+              const inner = (
+                <>
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <h3 className={`font-semibold ${m.textClass}`}>{mod.name}</h3>
+                    <Badge status={st} />
+                    {href && <span className="font-mono text-[10px] text-fg-dim ml-auto">→</span>}
+                  </div>
+                  <p className="text-sm text-fg-muted leading-relaxed">{mod.oneLine}</p>
+                </>
+              )
+              return href ? (
+                <Link
+                  key={mod.slug}
+                  href={href}
+                  className="card-interactive p-4 border-l-2 flex flex-col"
+                  style={{ borderLeftColor: m.hex }}
+                >
+                  {inner}
+                </Link>
+              ) : (
                 <div
                   key={mod.slug}
                   className="panel p-4 border-l-2 flex flex-col"
                   style={{ borderLeftColor: m.hex }}
                 >
-                  <div className="flex items-center gap-2.5 mb-2">
-                    <h3 className={`font-semibold ${m.textClass}`}>{mod.name}</h3>
-                    <Badge status={st} />
-                  </div>
-                  <p className="text-sm text-fg-muted leading-relaxed">{mod.oneLine}</p>
+                  {inner}
                 </div>
               )
             })}
