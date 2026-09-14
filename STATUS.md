@@ -14,7 +14,7 @@
 | P0 | 骨架 + 图片流水线 + 部署链路 | ✅ 已上线 |
 | R1 | 视觉重构为「未来科幻风」 | ✅ 已上线 |
 | R2 | 首页与子页填充真实内容 | ✅ 已上线 |
-| P1 | Kimi K3 垂直切片（5 个模块页） | 🚧 进行中 |
+| P1 | Kimi K3 垂直切片（概览 + 5 个模块页） | ✅ 已上线 |
 | P2 | 算子与策略 20 页 | ⬜ 待开始 |
 | P3 | V4.1 Flash + Qwen3.8 + 2 个横向专题 | ⬜ 待开始 |
 | P4 | 训练全流程（MiniMind 8 阶段） | ⬜ 待开始 |
@@ -24,6 +24,9 @@
 
 - **首页**：Hero（闪烁光标）+ 三焦点模型卡 + **双模型层墙交互** + 10 项横向对照表 + 三轨 + 路线图
 - **/architecture**：层墙 + 14 个模块清单（每页一句话说明）+ 12 模型全景表预告
+- **/architecture/kimi-k3**：K3 概览 —— 层墙 + **3:1 配比探索器** + 完整规格 + 模块入口
+- **/architecture/kimi-k3/{kda, gated-mla, attnres, latent-moe, situ-glu}**：5 个模块页，
+  统一三段式 **问题 → 设计 → 取舍** + 关键要点；KDA 页带 **AttentionScaling** 交互
 - **/training**：MiniMind 规格（64M / 8 层 / 768 / 词表 6400）+ 8 阶段时间线
 - **/ops**：高频前 20 算子（16 🔥 + 4 补），按「基础 / 注意力 / 推理策略 / 为模型补」分四组
 - **/about**：定位、数据来源、Kimi K3 License 说明、性能硬约束
@@ -104,6 +107,24 @@ curl --ssl-no-revoke -sL -H "Authorization: Bearer $TOK" \
 **按钮文字直接隐形**。Tailwind 的 textColor 插件排在 fontSize 之后，颜色胜出。
 → 颜色改名为 `void`（`bg-void`）。
 **教训**：自定义色名要避开 base / sm / lg / xl / 2xl 等所有默认字号名。
+
+### 9. ⭐⭐ `next/link` 会自动加 basePath —— 手动拼会叠加成双重前缀
+
+配了 `basePath: '/seeing-llm'` 后：
+
+| 写法 | 结果 |
+|---|---|
+| `<Link href="/architecture">` | `/seeing-llm/architecture/` ✅ Next.js 自动补 |
+| `<Link href={`${base}/architecture`}>` | `/seeing-llm/seeing-llm/architecture/` ❌ **叠加** |
+| `<a href={`${base}/architecture`}>` | `/seeing-llm/architecture` ✅ 原生 a 不自动补，必须手写 |
+
+症状很隐蔽：首页卡片点进去 404，页脚同样的链接却能打开 —— 因为一用 `next/link`、一用原生 `<a>`。
+→ 规则：**`next/link` 一律写根路径，原生 `<a>` / `<img>` / `fetch` / `next/script` 一律手写完整前缀。**
+
+顺带移除 `layout.tsx` 里的 `<base href={basePath}>`：basePath 已让所有资源输出绝对路径，
+`<base>` 只会让相对路径与 `#锚点` 被错误解析到 `/seeing-llm#xxx`。
+
+排查脚本：`scripts/fix_basepath.py`（批量去掉 next/link 的手动前缀）。
 
 ## 技术债
 
