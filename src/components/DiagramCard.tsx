@@ -17,8 +17,8 @@ export function DiagramCard({
     model === 'K3' ? 'text-k3' : model === 'V4' ? 'text-v4' : 'text-qwen'
 
   return (
-    <div className={`bg-white rounded-xl border border-ink-200 border-t-4 ${accentClass} overflow-hidden card-hover`}>
-      <div className="relative aspect-[4/3] bg-ink-100">
+    <div className={`bg-panel rounded-xl border border-line border-t-4 ${accentClass} overflow-hidden card-interactive`}>
+      <div className="relative aspect-[4/3] bg-void">
         {/* 静态导出模式：用普通 <img> 而非 next/image，避免 loader 配置坑 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -32,7 +32,7 @@ export function DiagramCard({
       <div className="p-4">
         <div className={`text-xs font-mono mb-1 ${textClass}`}>{model}</div>
         <h3 className="font-bold text-base mb-1">{title}</h3>
-        <p className="text-xs text-ink-600 leading-relaxed">{sub}</p>
+        <p className="text-xs text-fg-muted leading-relaxed">{sub}</p>
       </div>
     </div>
   )

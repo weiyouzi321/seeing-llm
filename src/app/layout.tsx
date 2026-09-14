@@ -22,7 +22,10 @@ export default function RootLayout({
         {/* basePath 前缀：用静态 head 而非 next/script */}
         {base && <base href={base} />}
       </head>
-      <body className="min-h-screen bg-white text-ink-900">
+      <body className="min-h-screen bg-void text-fg">
+        {/* 全站底纹：工业网格 + 顶部极光（固定，不随滚动） */}
+        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-grid" />
+        <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-aurora" />
         <SiteHeader />
         <main className="min-h-[calc(100vh-160px)]">{children}</main>
         <SiteFooter />

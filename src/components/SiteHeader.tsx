@@ -4,14 +4,16 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-ink-200">
+    <header className="sticky top-0 z-40 bg-void/80 backdrop-blur-md border-b border-line">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href={`${base}/`} className="flex items-center gap-2 font-bold">
-          <span className="inline-block w-7 h-7 rounded-md bg-gradient-hero" aria-hidden />
-          <span className="text-lg">seeing-llm</span>
-          <span className="text-xs font-mono text-ink-500 hidden md:inline">看见大模型</span>
+        <Link href={`${base}/`} className="flex items-center gap-2.5 group">
+          <span className="relative inline-block w-7 h-7 rounded-md bg-accent-bar" aria-hidden />
+          <span className="font-mono font-bold text-[15px] tracking-tight group-hover:text-glow transition">
+            seeing-llm
+          </span>
+          <span className="text-[11px] font-mono text-fg-dim hidden md:inline">看见大模型</span>
         </Link>
-        <nav className="flex items-center gap-1 sm:gap-2 text-sm">
+        <nav className="flex items-center gap-1 text-sm">
           <NavLink href={`${base}/architecture`}>架构解剖</NavLink>
           <NavLink href={`${base}/training`}>训练流程</NavLink>
           <NavLink href={`${base}/ops`}>算子</NavLink>
@@ -26,7 +28,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
-      className="px-3 py-2 rounded-md text-ink-700 hover:bg-ink-100 transition"
+      className="px-3 py-2 rounded-md text-fg-muted hover:text-fg hover:bg-white/[0.04] transition"
     >
       {children}
     </Link>

@@ -9,75 +9,71 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // seeing-llm 主题色：深空蓝紫底 + 电光青/紫
-        // 与 seeing-single-cell 区分（那边是 蓝+橙+绿）
-        ink: {
-          50:  '#F8FAFC',
-          100: '#F1F5F9',
-          200: '#E2E8F0',
-          300: '#CBD5E1',
-          400: '#94A3B8',
-          500: '#64748B',
-          600: '#475569',
-          700: '#334155',
-          800: '#1E293B',
-          900: '#0F172A',
-          950: '#020617',
+        // ---- 未来科幻风：深色底 + 霓虹强调 ----
+        // 与 seeing-single-cell（浅色 + 生物绿）彻底区分
+        void:   '#05070D',   // 页面底色（近黑，带冷蓝）
+        panel:  '#0A101E',   // 卡片 / 面板
+        raised: '#101828',   // 悬浮层 / 代码块
+        line:   '#1B2740',   // 1px 分隔线、边框
+        fg: {
+          DEFAULT: '#E6EDF7',  // 主文字
+          muted:   '#8A9BB8',  // 次要文字
+          dim:     '#5A6B85',  // 微弱文字 / 标签
         },
-        // 主色：靛紫
-        primary: {
-          50:  '#EEF2FF',
-          100: '#E0E7FF',
-          200: '#C7D2FE',
-          300: '#A5B4FC',
-          400: '#818CF8',
-          500: '#6366F1',
-          600: '#4F46E5',
-          700: '#4338CA',
-          800: '#3730A3',
-          900: '#312E81',
-          DEFAULT: '#4F46E5',
-        },
-        // 强调色：电光青
-        accent: {
-          50:  '#ECFEFF',
-          100: '#CFFAFE',
-          200: '#A5F3FC',
-          300: '#67E8F9',
-          400: '#22D3EE',
-          500: '#06B6D4',
-          600: '#0891B2',
-          700: '#0E7490',
-          DEFAULT: '#06B6D4',
-        },
-        // 点缀色：紫红（K3 模型色）
-        k3:      '#8B5CF6',
-        // 点缀色：青绿（V4.1 Flash 模型色）
-        v4:      '#10B981',
-        // 点缀色：琥珀（Qwen3.8 模型色）
-        qwen:    '#F59E0B',
+        // 霓虹强调色
+        neon: '#22D3EE',
+        // 三个焦点模型的语义色（全站固定，勿改）
+        k3:   '#A78BFA',   // Kimi K3        —— 紫
+        v4:   '#22D3EE',   // V4.1 Flash     —— 青
+        qwen: '#FB923C',   // Qwen3.8        —— 橙
       },
       fontFamily: {
-        sans: ['Inter', '"Noto Sans SC"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', '"Noto Sans Mono CJK SC"', 'monospace'],
+        sans: ['Inter', '"Noto Sans SC"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+      },
+      letterSpacing: {
+        wider2: '0.18em',
+      },
+      boxShadow: {
+        // 霓虹发光
+        glow:        '0 0 0 1px rgba(34,211,238,0.25), 0 0 24px -6px rgba(34,211,238,0.45)',
+        'glow-k3':   '0 0 0 1px rgba(167,139,250,0.25), 0 0 24px -6px rgba(167,139,250,0.45)',
+        'glow-v4':   '0 0 0 1px rgba(34,211,238,0.25), 0 0 24px -6px rgba(34,211,238,0.45)',
+        'glow-qwen': '0 0 0 1px rgba(251,146,60,0.25), 0 0 24px -6px rgba(251,146,60,0.45)',
       },
       backgroundImage: {
-        'gradient-hero': 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #06B6D4 100%)',
-        'gradient-soft': 'linear-gradient(180deg, #F8FAFC 0%, #EEF2FF 100%)',
+        // 工业网格底纹
+        'grid-fade':
+          'linear-gradient(to right, rgba(120,160,255,0.055) 1px, transparent 1px),' +
+          'linear-gradient(to bottom, rgba(120,160,255,0.055) 1px, transparent 1px)',
+        // 顶部光晕
+        'aurora':
+          'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(34,211,238,0.16), transparent 60%),' +
+          'radial-gradient(ellipse 60% 40% at 85% 0%, rgba(167,139,250,0.12), transparent 60%),' +
+          'radial-gradient(ellipse 50% 40% at 10% 0%, rgba(251,146,60,0.08), transparent 60%)',
+        'accent-bar': 'linear-gradient(90deg, #A78BFA 0%, #22D3EE 50%, #FB923C 100%)',
+      },
+      backgroundSize: {
+        grid: '44px 44px',
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
-        'gradient': 'gradient 8s ease infinite',
+        'blink':      'blink 1.1s steps(1) infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'scan':       'scan 8s linear infinite',
       },
       keyframes: {
         fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%':   { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        gradient: {
-          '0%, 100%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
+        blink: {
+          '0%, 49%':   { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
+        },
+        scan: {
+          '0%':   { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
         },
       },
     },
