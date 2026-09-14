@@ -422,13 +422,36 @@ export const OP_LINKS: Record<string, CrossLink[]> = {
   'linear-regression': [{ href: '/training', label: '轨道 B · 从最小二乘到反向传播' }],
   sdpa: [{ href: '/architecture/kimi-k3/gated-mla', label: 'Gated MLA 改的就是这个式子' }],
   'multihead-attention': [{ href: '/architecture/kimi-k3/gated-mla', label: 'K3 如何砍掉多头的 KV' }],
-  gqa: [{ href: '/architecture/kimi-k3/gated-mla', label: 'MLA：GQA 之外的另一条路' }],
+  gqa: [
+    { href: '/architecture/kimi-k3/gated-mla', label: 'MLA：GQA 之外的另一条路' },
+    { href: '/architecture/qwen3-8/gated-attention', label: 'Qwen3.8 把 GQA 推到 16:1' },
+  ],
   'causal-attention': [{ href: '/architecture/kimi-k3/kda', label: 'KDA 把因果性写进递推状态' }],
-  rope: [{ href: '/architecture/kimi-k3/gated-mla', label: 'RoPE 在 MLA 里怎么处理' }],
-  'kv-cache': [{ href: '/architecture/kimi-k3/gated-mla', label: '为什么 K3 要削减 75% KV' }],
-  'linear-attention': [{ href: '/architecture/kimi-k3/kda', label: 'KDA = 线性注意力 + 门控' }],
-  'moe-routing': [{ href: '/architecture/kimi-k3/latent-moe', label: '896 选 16 的 Latent MoE' }],
-  linear: [{ href: '/architecture/kimi-k3/latent-moe', label: '专家里的矩阵都在哪' }],
+  rope: [
+    { href: '/architecture/kimi-k3/gated-mla', label: 'RoPE 在 MLA 里怎么处理' },
+    { href: '/architecture/qwen3-8/gated-attention', label: 'Qwen3.8 只给 64 维上 RoPE' },
+  ],
+  'kv-cache': [
+    { href: '/architecture/kimi-k3/gated-mla', label: '为什么 K3 要削减 75% KV' },
+    { href: '/architecture/deepseek-v4-flash/kv-compression', label: 'V4.1 Flash：FP4 主 KV 890 B/token' },
+    { href: '/topics/kv-cache', label: '横向专题 · KV Cache 三条路线' },
+  ],
+  'linear-attention': [
+    { href: '/architecture/kimi-k3/kda', label: 'KDA = 线性注意力 + 门控' },
+    { href: '/architecture/qwen3-8/gated-deltanet', label: '另一条实现：Gated DeltaNet' },
+  ],
+  'moe-routing': [
+    { href: '/architecture/kimi-k3/latent-moe', label: '896 选 16 的 Latent MoE' },
+    { href: '/topics/moe-sparsity', label: '横向专题 · MoE 稀疏度三家对比' },
+  ],
+  'beam-search': [
+    { href: '/architecture/qwen3-8/mtp', label: '多步预测也能当草稿器' },
+    { href: '/architecture/deepseek-v4-flash/dspark', label: 'DSpark 半自回归草稿' },
+  ],
+  linear: [
+    { href: '/architecture/kimi-k3/latent-moe', label: '专家里的矩阵都在哪' },
+    { href: '/architecture/deepseek-v4-flash/engram', label: 'Engram 用查表替代矩阵乘' },
+  ],
   'gpt2-block': [{ href: '/architecture/kimi-k3', label: '93 层就是 93 个这样的块' }],
 }
 

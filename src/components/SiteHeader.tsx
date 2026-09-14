@@ -15,6 +15,7 @@ export function SiteHeader() {
         </Link>
         <nav className="flex items-center gap-1 text-sm">
           <NavLink href="/architecture">架构解剖</NavLink>
+          <NavLink href="/topics">专题</NavLink>
           <NavLink href="/training">训练流程</NavLink>
           <NavLink href="/ops">算子</NavLink>
           <NavLink href="/about">关于</NavLink>

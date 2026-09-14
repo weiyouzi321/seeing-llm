@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { Brain, GitBranch, FlaskConical } from 'lucide-react'
 import { LayerWall } from '@/components/LayerWall'
-import { MODEL_LIST, MODELS, COMPARE, ROADMAP, type ModelId, type PhaseStatus } from '@/lib/models'
+import { MODEL_LIST, MODELS, COMPARE, ROADMAP, TOPICS, type ModelId, type PhaseStatus } from '@/lib/models'
+import { modelPath } from '@/lib/routes'
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
@@ -95,9 +96,10 @@ export default function HomePage() {
         />
         <div className="grid md:grid-cols-3 gap-5">
           {MODEL_LIST.map((m) => (
-            <div
+            <Link
               key={m.id}
-              className="panel p-5 border-t-2 flex flex-col"
+              href={modelPath(m.id)}
+              className="panel p-5 border-t-2 flex flex-col card-interactive"
               style={{ borderTopColor: m.hex }}
             >
               <div className="eyebrow mb-1.5">{m.released}</div>
@@ -121,7 +123,10 @@ export default function HomePage() {
                   ))}
                 </ul>
               </div>
-            </div>
+              <div className="mt-4 font-mono text-[11px] text-fg-dim">
+                进入 {m.name} 解剖页 →
+              </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -137,6 +142,47 @@ export default function HomePage() {
         />
         <div className="panel p-6">
           <LayerWall ids={['k3', 'qwen', 'v4']} maxLayers={13} />
+        </div>
+        <div className="mt-4">
+          <Link href="/architecture/alignment" className="btn-ghost">
+            打开完整的双模型对齐层墙 →
+          </Link>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6"><div className="rule" /></div>
+
+      {/* ============ 横向专题 ============ */}
+      <section className="max-w-6xl mx-auto px-6 py-16">
+        <SectionHead
+          eyebrow="Cross-cutting Topics"
+          title="横向专题 · 同一问题的三种解法"
+          desc="单个模型的解剖页只能看到一种答案。把三家并排放，取舍才显出来 —— 每个专题都配一个可拖组件。"
+        />
+        <div className="grid md:grid-cols-2 gap-5">
+          {TOPICS.map((t) => (
+            <Link key={t.slug} href={`/topics/${t.slug}`} className="card-interactive p-6">
+              <div className="eyebrow mb-2">{t.entries.length} 家并排</div>
+              <h3 className="text-xl font-bold mb-2">{t.title}</h3>
+              <p className="text-sm text-fg mb-3 font-mono leading-relaxed">「{t.question}」</p>
+              <p className="text-sm text-fg-muted leading-relaxed mb-4">{t.body}</p>
+              <div className="flex flex-wrap gap-2">
+                {t.entries.map((e) => (
+                  <span
+                    key={e.model}
+                    className="font-mono text-[10px] px-2 py-0.5 rounded border"
+                    style={{
+                      color: MODELS[e.model].hex,
+                      borderColor: `${MODELS[e.model].hex}55`,
+                      background: `${MODELS[e.model].hex}12`,
+                    }}
+                  >
+                    {MODELS[e.model].name}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -213,7 +259,7 @@ export default function HomePage() {
         <SectionHead
           eyebrow="Roadmap"
           title="建设路线图"
-          desc="P0 已上线，P1 进行中。进度随仓库同步更新。"
+          desc="P0–P2 已上线，P3 进行中。进度随仓库同步更新。"
         />
         <div className="panel p-6 space-y-0">
           {ROADMAP.map((p, i) => (

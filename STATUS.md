@@ -2,8 +2,9 @@
 
 > 完整建设方案见 [`seeing-llm-建设方案-v2.1.md`](./seeing-llm-建设方案-v2.1.md)。
 
-**当前阶段：P2 · 算子与策略 20 页（20 个算子页 + 13 个交互可视化）**
+**当前阶段：P3 · V4.1 Flash + Qwen3.8 + 2 个横向专题（本地构建通过，等推送上线）**
 **线上地址：https://weiyouzi321.github.io/seeing-llm/**
+**静态页：49（P2 时 35）**
 
 ---
 
@@ -16,17 +17,20 @@
 | R2 | 首页与子页填充真实内容 | ✅ 已上线 |
 | P1 | Kimi K3 垂直切片（概览 + 5 个模块页） | ✅ 已上线 |
 | P2 | 算子与策略 20 页 + 交互可视化 | ✅ 已上线（commit `abe939c`） |
-| P3 | V4.1 Flash + Qwen3.8 + 2 个横向专题 | ⬜ 待开始 |
+| P3 | V4.1 Flash + Qwen3.8 + 2 个横向专题 | 🔄 代码完成，本地构建 49 页通过 |
 | P4 | 训练全流程（MiniMind 8 阶段） | ⬜ 待开始 |
 | P5 | 收尾 + 待补清单 | ⬜ 待开始 |
 
 ## 已上线内容
 
 - **首页**：Hero（闪烁光标）+ 三焦点模型卡 + **双模型层墙交互** + 10 项横向对照表 + 三轨 + 路线图
-- **/architecture**：层墙 + 14 个模块清单（每页一句话说明）+ 12 模型全景表预告
-- **/architecture/kimi-k3**：K3 概览 —— 层墙 + **3:1 配比探索器** + 完整规格 + 模块入口
-- **/architecture/kimi-k3/{kda, gated-mla, attnres, latent-moe, situ-glu}**：5 个模块页，
-  统一三段式 **问题 → 设计 → 取舍** + 关键要点；KDA 页带 **AttentionScaling** 交互
+- **/architecture**：层墙 + **14 个模块清单（全部可点）** + 对齐页/专题入口 + 12 模型全景表预告
+- **/architecture/{kimi-k3, deepseek-v4-flash, qwen3-8}**：三模型通用概览 ——
+  层骨架 + 核心交互（K3/Qwen 走 **3:1 配比探索器**，V4 走 **CED 纵向切分图**）+ 完整规格 + 模块入口
+- **/architecture/{kimi-k3, deepseek-v4-flash, qwen3-8}/{slug}**：**14 个模块页**，
+  统一三段式 **问题 → 设计 → 取舍** + 交互可视化 + 关键要点 + 「同一件事，别家怎么做」横向链接
+- **/architecture/alignment**：双模型层墙对齐（K3 ⟷ Qwen3.8 的 23×4 逐组/逐位对照）
+- **/topics/{moe-sparsity, kv-cache}**：2 个横向专题，各带一个可拖组件
 - **/training**：MiniMind 规格（64M / 8 层 / 768 / 词表 6400）+ 8 阶段时间线
 - **/ops**：高频前 20 算子（16 🔥 + 4 补），按「基础 / 注意力 / 推理策略 / 为模型补」分四组，
   卡片直达详情页，带「可交互」角标
@@ -150,7 +154,8 @@ curl --ssl-no-revoke -sL -H "Authorization: Bearer $TOK" \
 
 ## 技术债
 
-- **没有 `package-lock.json`** —— 补上后应把 `npm ci` 与 `cache: 'npm'` 切回来。
+- ~~**没有 `package-lock.json`**~~ —— P2 已补（lockfileVersion 3），CI 切回 `npm ci` + `cache: 'npm'`，
+  构建耗时 110s → 48s。
 - **架构图仍是合成占位图** —— HF 在沙箱返回 502，真实原图未拉下来。
   文件名与压缩档位已固定，替换 `raw/` 后重跑 `compress.py` 即可，无需改前端。
 - **`node_modules` 未纳入版本控制** —— 沙箱本地安装用，记得确认 `.gitignore` 已忽略。
@@ -180,9 +185,53 @@ curl --ssl-no-revoke -sL -H "Authorization: Bearer $TOK" \
 `.rng::-webkit-slider-thumb` 这类纯伪元素样式放在 `@layer` 内风险高。
 → 滑块样式移到 `@layer` 之外的普通 CSS 区（globals.css 底部）。
 
-## 下一步（P3）
+## P3 · V4.1 Flash + Qwen3.8 + 横向专题（2026-09-14 完成，待上线）
 
-1. V4.1 Flash + Qwen3.8 模块页（层骨架与 K3 同构 23×4，可复用模板）
-2. **双模型层墙**：K3 与 Qwen3.8 逐层对齐
-3. 两个横向专题：MoE 稀疏度三条路线 / KV Cache 三条路线
-4. P4 训练全流程（MiniMind 8 阶段可视时间线，数据已在 `TRAIN_STAGES`）
+**12 个新页面**：静态页 35 → 49
+
+| 路由 | 内容 |
+|---|---|
+| `/architecture/[model]` | 三模型通用概览页（替换只服务 K3 的旧 `kimi-k3/page.tsx`） |
+| `/architecture/[model]/[slug]` | 通用模块页，**14 个模块全部上线** |
+| `/architecture/alignment` | 双模型层墙对齐（K3 ⟷ Qwen3.8） |
+| `/topics`、`/topics/[slug]` | 2 个横向专题 + 各自的可拖组件 |
+
+**6 个新交互组件**
+
+| 组件 | 位置 | 演示的性质 |
+|---|---|---|
+| `CedFlow` | V4 · ced | prompt 侧 KV 从 n 份压成 1 份的收益（含 8B/16B 非对称激活） |
+| `CsaModes` | V4 · csa2 | 「Reindex 漏选 → 后续 Reuse 全都看不见」 |
+| `DeltaRule` | Qwen3.8 · gated-deltanet | 写前先擦除 → 状态可覆写；纯累加只能稀释 |
+| `MtpDraft` | Qwen3.8 · mtp | γ 存在内部最优；α 低时直接跌破 1.0 |
+| `SparsityCompare` | topics · moe-sparsity | 冷启动上界 (1−k/E)^T 的三家对比 |
+| `KvRoutes` | topics · kv-cache | 每 token 字节 → 整段上下文占用，量级差上百倍 |
+
+**数据源重构**：`src/lib/modules.ts` 取代 `src/lib/k3.ts`，统一承载 14 个模块文档；
+新增 `src/lib/routes.ts` 管理 `ModelId ↔ URL 段落` 映射（改 URL 不必动数据）。
+OP_LINKS 扩充到 20 条，算子页现在能指向 V4/Qwen 模块与横向专题。
+
+### 踩坑记录（P3 新增）
+
+### 14. ⭐ 旧静态路由与新动态路由同名会让两个 `[model]` 段打架
+
+`/architecture/kimi-k3/page.tsx`（静态）与 `/architecture/[model]/page.tsx`（动态）并存时，
+虽然 Next 会让静态优先，但两个文件的 imports / 文案各写一套，改一处漏一处。
+→ 直接删掉静态那条，统一走动态段；用 `MODEL_ROUTE` 保证 `kimi-k3` 这个 URL **不变**（外部链接不失效）。
+
+### 15. 数据在 `models.ts`、链接在 `routes.ts`、文档在 `modules.ts`
+
+一开始把 URL 硬编码在 4 个页面里，改一次路由要改 4 处，还容易漏掉 `ops.ts` 的交叉链接。
+→ 三件事分开：规格事实 / URL 命名 / 模块文档各一个文件，页面只调用 `modelPath()` / `modulePath()`。
+
+### 16. 前端数值估算必须把口径写在页面上
+
+`KvRoutes` 里的「161 KB/token」依赖一串假设（head_dim、精度、忽略的部分）。
+→ 每个简化模型都配一条 `Note` 写明三条假设，并强调「看量级和趋势，不要直接套绝对值」。
+
+## 下一步（P4）
+
+1. **训练全流程**（MiniMind 8 阶段可视时间线，数据已在 `TRAIN_STAGES` / `TRAIN_FACTS`）
+2. `/training` 目前还是占位页 —— P4 的落点是把它做成可拖的时间线 + 每阶段一段代码
+3. P5 收尾：剩余 21 个算子走待补清单；全站三轨交叉链接补到算子 ⇄ 模块 ⇄ 阶段三向互通
+4. 12 模型全景表（仍在 `/architecture` 底部占位）

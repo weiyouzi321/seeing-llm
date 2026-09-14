@@ -139,8 +139,8 @@ const V4: FocusModel = {
     formula: 'CED 40 层 = 20 编码 + 20 解码',
     total: 40,
     groups: [
-      { title: 'Causal Encoder', sub: '20 层 · 建全局 KV', kind: 'enc', count: 20 },
-      { title: 'Decoder', sub: '20 层 · 复用编码器 KV', kind: 'dec', count: 20 },
+      { title: 'Causal Encoder', sub: '建全局 KV', kind: 'enc', count: 20 },
+      { title: 'Decoder', sub: '复用编码器 KV', kind: 'dec', count: 20 },
     ],
   },
   spec: [
@@ -153,6 +153,7 @@ const V4: FocusModel = {
     { label: '条件记忆', value: 'Engram 196B' },
     { label: '残差', value: 'Single-Pass mHC' },
     { label: '解码加速', value: 'DSpark 半自回归草稿' },
+    { label: '上下文', value: '1M' },
     { label: '后训练', value: 'SFT → RL → OPD' },
   ],
   modules: [
@@ -241,7 +242,7 @@ export const TOPICS: Topic[] = [
   {
     slug: 'kv-cache',
     title: 'KV Cache 三条路线',
-    question: '同一个「长上下文太贵」的问题，三家的解法完全不同',
+    question: '长上下文太贵，三家的解法完全不同',
     body: '一条走向「让 KV 变成常数」，一条走向「把 KV 压到极致」，还有一条两者都做。',
     entries: [
       { model: 'k3', answer: '3:1 的线性/全注意力配比 —— 只有 1/4 的层需要存 KV，KV Cache 最多削减 75%。' },
@@ -299,19 +300,20 @@ export const ROADMAP: Phase[] = [
     id: 'P1',
     title: 'Kimi K3 垂直切片',
     detail: '概览页 + 5 个模块页（KDA / Gated MLA / AttnRes / Stable LatentMoE / SiTU-GLU）',
-    status: 'doing',
+    status: 'done',
   },
   {
     id: 'P2',
     title: '算子与策略 20 页',
     detail: 'TorchCode 高频前 20：16 个 🔥 + MoE / GQA / Linear Attention / GPT-2 Block',
-    status: 'todo',
+    status: 'done',
   },
   {
     id: 'P3',
-    title: 'V4.1 Flash + Qwen3.8',
-    detail: '补齐两个焦点模型 · 双模型层墙 · 2 个横向专题（MoE 稀疏度 / KV Cache 三条路线）',
-    status: 'todo',
+    title: 'V4.1 Flash + Qwen3.8 + 横向专题',
+    detail:
+      '三模型通用路由与 14 个模块页 · 双模型层墙对齐 · 2 个横向专题（MoE 稀疏度 / KV Cache 三条路线）',
+    status: 'doing',
   },
   {
     id: 'P4',
