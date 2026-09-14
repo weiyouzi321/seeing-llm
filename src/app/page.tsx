@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Brain, GitBranch, FlaskConical } from 'lucide-react'
+import { DiagramCard } from '@/components/DiagramCard'
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
