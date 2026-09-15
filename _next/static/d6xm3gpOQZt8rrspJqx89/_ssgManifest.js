@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Farchitecture\u002F[model]","\u002Farchitecture\u002F[model]\u002F[slug]","\u002Fops\u002F[slug]","\u002Ftopics\u002F[slug]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
