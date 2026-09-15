@@ -23,10 +23,26 @@ export default function ArchitecturePage() {
         <span><span className="text-neon">{MODULE_COUNT}</span> 个模块页</span>
         <span><span className="text-neon">6</span> 个模块交互组件</span>
         <span><span className="text-neon">2</span> 个横向专题</span>
+        <span><span className="text-neon">12</span> 个模型全景</span>
+        <span><span className="text-neon">24</span> 个演进节点</span>
       </div>
 
       {/* 入口条 */}
-      <div className="grid sm:grid-cols-2 gap-3 mb-12">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-12">
+        <Link href="/architecture/panorama" className="card-interactive p-4">
+          <div className="eyebrow mb-1">A1 · 看趋势</div>
+          <div className="font-semibold mb-1">12 模型全景对比</div>
+          <p className="text-xs text-fg-muted leading-relaxed">
+            总参 / 激活 / 稀疏度 / 注意力形态 / 上下文，三种可切换轴的散点图。
+          </p>
+        </Link>
+        <Link href="/architecture/evolution" className="card-interactive p-4">
+          <div className="eyebrow mb-1">A5 · 看来历</div>
+          <div className="font-semibold mb-1">演进时间轴 2017→2026</div>
+          <p className="text-xs text-fg-muted leading-relaxed">
+            24 个节点、五条线索，每个都写清它是今天哪个模块的前身。
+          </p>
+        </Link>
         <Link href="/architecture/alignment" className="card-interactive p-4">
           <div className="eyebrow mb-1">最有原创价值的一张</div>
           <div className="font-semibold mb-1">双模型层墙对齐 ⟷</div>
@@ -129,19 +145,28 @@ export default function ArchitecturePage() {
         )
       })}
 
-      {/* 12 模型全景表 */}
-      <section>
-        <h2 className="text-xl font-bold mb-4">12 模型全景表</h2>
-        <div className="panel p-6">
-          <p className="text-fg-muted text-sm leading-relaxed mb-3">
-            除了三个焦点模型，这里会补一张覆盖 12 个代表性开源模型的全景对照表，
-            把「层骨架 / 注意力配比 / 专家稀疏度 / KV 路线 / 上下文」这些维度铺开看趋势。
-          </p>
-          <p className="text-xs font-mono text-fg-dim">
-            注：此前参考的 <span className="text-fg-muted">CalvinXKY/InfraTech</span> 仓库已滞后 ——
-            其 <span className="font-mono">models/</span> 目录仅 11 项，且不含 qwen3_8 与 deepseek_v4_1_flash。
-            焦点模型的原图与技术细节改从 HF 模型卡、ModelScope 与官方技术报告取。
-          </p>
+      {/* 两翼：全景表 + 时间轴 */}
+      <section className="mb-14">
+        <h2 className="text-xl font-bold mb-4">把三个模型放回坐标系里</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          <Link href="/architecture/panorama" className="card-interactive p-5">
+            <div className="eyebrow mb-2">空间维度 · 同一时刻别人在做什么</div>
+            <h3 className="font-semibold mb-2">12 模型全景对比</h3>
+            <p className="text-sm text-fg-muted leading-relaxed mb-3">
+              总参数从 405B 涨到 2.8T，激活参数却始终在 5B–104B 之间 —— 这个脱钩是过去两年最大的变化。
+              表里还能按「只看 MoE / 只看混合注意力 / 只看 1M 上下文 / 只看宽松许可」筛。
+            </p>
+            <span className="font-mono text-[11px] text-neon">打开全景表 →</span>
+          </Link>
+          <Link href="/architecture/evolution" className="card-interactive p-5">
+            <div className="eyebrow mb-2">时间维度 · 这个设计从哪来</div>
+            <h3 className="font-semibold mb-2">演进时间轴 2017 → 2026</h3>
+            <p className="text-sm text-fg-muted leading-relaxed mb-3">
+              24 个节点分五条线索：注意力、稀疏化、上下文与精度、骨架、训练与对齐。
+              每个节点都写清它是今天哪个模块的前身 —— 比如 2020 年的线性注意力，就是 KDA 的前身。
+            </p>
+            <span className="font-mono text-[11px] text-neon">打开时间轴 →</span>
+          </Link>
         </div>
       </section>
 

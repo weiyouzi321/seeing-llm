@@ -313,7 +313,14 @@ export const ROADMAP: Phase[] = [
     title: 'V4.1 Flash + Qwen3.8 + 横向专题',
     detail:
       '三模型通用路由与 14 个模块页 · 双模型层墙对齐 · 2 个横向专题（MoE 稀疏度 / KV Cache 三条路线）',
-    status: 'doing',
+    status: 'done',
+  },
+  {
+    id: 'P3b',
+    title: '轨道 A 收口：A1 全景表 + A5 演进时间轴',
+    detail:
+      '12 模型全景对比（三轴散点 + 可筛可排）· 24 节点五线索演进时间轴 · 轨道 A 五块交付齐了',
+    status: 'done',
   },
   {
     id: 'P4',

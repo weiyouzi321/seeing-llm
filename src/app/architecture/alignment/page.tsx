@@ -95,6 +95,8 @@ export default function AlignmentPage() {
 
       <div className="flex flex-wrap gap-4">
         <Link href="/architecture" className="btn-ghost">← 返回架构解剖</Link>
+        <Link href="/architecture/panorama" className="btn-ghost">12 模型全景对比 →</Link>
+        <Link href="/architecture/evolution" className="btn-ghost">演进时间轴 →</Link>
         <Link href="/topics" className="btn-ghost">横向专题 →</Link>
       </div>
     </div>
